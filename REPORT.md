@@ -67,7 +67,7 @@ This analysis cannot tell which sensor is correct, only that they disagree in a 
 
 ![u/v components](out/direction_uv.png)
 
-**Components.** u is the east component and v is the north component, which for apparent wind means starboard-ish and bow-ward. Components avoid angle wraparound, so they give a cleaner picture.
+**Components.** These are apparent-wind components in the boat's frame: u is the starboard component (90° = starboard) and v is the bow component (0° = bow), not east/north.
 
 | Component | Bias (kn) | Slope | R²    |
 |-----------|-----------|-------|-------|

@@ -68,8 +68,9 @@ def plot_speed(df, path_prefix, a="ft_spd", b="wi_spd", max_points=200_000):
     ax.axhline(bias, color="r", label=f"bias {bias:.2f} kn")
     for k in (-1.96, 1.96):
         ax.axhline(bias + k * sd, color="r", ls="--")
-    ax.set(xlabel="Mean of FT602 and 200WX (kn)", ylabel="FT602 - 200WX (kn)",
-           title="Bland-Altman: wind speed")
+    ax.set(xlabel="Mean of FT602 and 200WX apparent wind speed (kn)",
+           ylabel="FT602 - 200WX apparent wind speed (kn)",
+           title="Bland-Altman: apparent wind speed")
     ax.legend()
     ba_path = f"{path_prefix}_bland_altman.png"
     fig.savefig(ba_path, dpi=120, bbox_inches="tight")
@@ -82,8 +83,8 @@ def plot_speed(df, path_prefix, a="ft_spd", b="wi_spd", max_points=200_000):
     ax.plot(lim, lim, "k:", label="1:1")
     ax.plot(lim, slope * lim + intercept, "r",
             label=f"TLS: y={slope:.3f}x+{intercept:.2f}, R²={r2:.3f}")
-    ax.set(xlabel="200WX speed (kn)", ylabel="FT602 speed (kn)",
-           title="Wind speed regression", aspect="equal")
+    ax.set(xlabel="200WX apparent wind speed (kn)", ylabel="FT602 apparent wind speed (kn)",
+           title="Apparent wind speed regression", aspect="equal")
     ax.legend()
     sc_path = f"{path_prefix}_scatter.png"
     fig.savefig(sc_path, dpi=120, bbox_inches="tight")

@@ -27,7 +27,7 @@ def circ_std(deg):
 
 
 def to_uv(spd, direction):
-    """Convert speed and direction (deg, 0 = north/bow, clockwise) to (u, v) = (east, north) components."""
+    """Convert speed and direction (deg, 0 = north/bow, clockwise) to (u, v) components (apparent: u = starboard, v = bow)."""
     rad = np.deg2rad(np.asarray(direction, float))
     spd = np.asarray(spd, float)
     return spd * np.sin(rad), spd * np.cos(rad)
@@ -82,8 +82,8 @@ def plot_direction(df, path_prefix, threshold=SPEED_THRESHOLD_KN, bin_deg=15):
     fig, ax = plt.subplots(figsize=(9, 5))
     ax.errorbar(tab["dir_bin"], tab["mean_offset"], yerr=tab["circ_sd"], fmt="o-", capsize=3)
     ax.axhline(0, color="k", lw=0.5)
-    ax.set(xlabel="200WX direction (deg)", ylabel="FT602 - 200WX direction (deg)",
-           title=f"Direction offset vs direction (speed >= {threshold} kn)", xlim=(0, 360))
+    ax.set(xlabel="200WX apparent wind angle (deg, 0 = bow, 90 = starboard)", ylabel="FT602 - 200WX apparent wind angle (deg)",
+           title=f"Apparent wind angle offset vs angle (apparent speed >= {threshold} kn)", xlim=(0, 360))
     off_path = f"{path_prefix}_offset_vs_dir.png"
     fig.savefig(off_path, dpi=120, bbox_inches="tight")
     plt.close(fig)
@@ -93,13 +93,14 @@ def plot_direction(df, path_prefix, threshold=SPEED_THRESHOLD_KN, bin_deg=15):
     n = len(df)
     idx = np.random.default_rng(0).choice(n, min(n, 200_000), replace=False)
     fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-    for ax, (x, y, name) in zip(axes, [(wu, fu, "u (east)"), (wv, fv, "v (north)")]):
+    for ax, (x, y, name) in zip(axes, [(wu, fu, "apparent u (starboard)"), (wv, fv, "apparent v (bow)")]):
         ax.hexbin(np.asarray(x)[idx], np.asarray(y)[idx], gridsize=80, bins="log",
                   cmap="viridis", mincnt=1)
         lim = max(np.abs(x).max(), np.abs(y).max())
         ax.plot([-lim, lim], [-lim, lim], "k:")
         ax.set(xlabel=f"200WX {name} (kn)", ylabel=f"FT602 {name} (kn)", aspect="equal",
                title=name)
+    fig.suptitle("Apparent wind components (boat frame: u = starboard, v = toward bow)")
     uv_path = f"{path_prefix}_uv.png"
     fig.savefig(uv_path, dpi=120, bbox_inches="tight")
     plt.close(fig)

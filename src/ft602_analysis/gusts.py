@@ -48,9 +48,9 @@ def plot_gusts(w, path_prefix):
     import matplotlib.pyplot as plt
 
     fig, axes = plt.subplots(1, 3, figsize=(16, 5.5))
-    for ax, (key, label) in zip(axes, [("max", "10-min max speed (kn)"),
-                                       ("gf", "Gust factor (max/mean)"),
-                                       ("ti", "Turbulence intensity (σ/mean)")]):
+    for ax, (key, label) in zip(axes, [("max", "10-min max apparent wind speed (kn)"),
+                                       ("gf", "Apparent gust factor (max/mean)"),
+                                       ("ti", "Apparent turbulence intensity (σ/mean)")]):
         x, y = w[f"wi_{key}"], w[f"ft_{key}"]
         ax.hexbin(x, y, gridsize=50, bins="log", cmap="viridis", mincnt=1)
         lim = [0, max(x.max(), y.max())]
